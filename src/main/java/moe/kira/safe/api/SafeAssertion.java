@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Locale;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+
 import com.google.common.collect.Lists;
 
 import lombok.experimental.UtilityClass;
@@ -102,18 +104,23 @@ public class SafeAssertion {
         }
     }
     
-    private final static List<SafeOperator> operators = Lists.newArrayList();
+    private final static List<Object> operators = Lists.newArrayList();
     
     public final static void hook(SafeOperator safeOperation) {
         operators.add(safeOperation);
     }
     
-    public final static void register(SafeOperator safeOperation) {
-        operators.add(safeOperation);
+    public final static void hook(Plugin plugin) {
+        operators.add(plugin);
     }
     
     private final static void ensuresSafety() {
-        operators.forEach(operator -> operator.ensuresSafety());
+        operators.forEach(operator -> {
+            if (operator instanceof SafeOperator)
+                ((SafeOperator) operator).ensuresSafety();
+            else
+                ((Plugin) operator).onDisable();
+        });
         System.exit(2);
     }
     
