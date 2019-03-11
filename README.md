@@ -22,6 +22,6 @@ Dependency:
 <dependency>
     <groupId>moe.kira.safe</groupId>
     <artifactId>safe-assertion</artifactId>
-    <version>1.0</version>
+    <version>1.2</version>
 </dependency>
 ```
