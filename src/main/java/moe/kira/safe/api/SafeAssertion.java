@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.google.common.collect.Lists;
 
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -27,12 +28,7 @@ public class SafeAssertion {
                     verifyServerAndApi() &&
                     verifyClasses();
         } catch (Throwable t) {
-            try {
-                SafeAssertion.ensuresSafety();
-            } catch (Throwable throwable) {
-                System.exit(2);
-            }
-            System.exit(2);
+            SafeAssertion.ensuresSafety();
         }
         
         safe = isSafe;
@@ -49,22 +45,12 @@ public class SafeAssertion {
             boolean fSafe = isSafe;
             Runnable runnable = () -> {
                 if (fSafe != safe) {
-                    try {
-                        SafeAssertion.ensuresSafety();
-                    } catch (Throwable t) {
-                        System.exit(2);
-                    }
-                    System.exit(2);
+                    SafeAssertion.ensuresSafety();
                 }
                 boolean cache = safe;
                 while (safe) {
                     if (!safe || safe != cache || safe != fSafe) {
-                        try {
-                            SafeAssertion.ensuresSafety();
-                        } catch (Throwable t) {
-                            System.exit(2);
-                        }
-                        System.exit(2);
+                        SafeAssertion.ensuresSafety();
                     }
                     int modifiers_ = safeField.getModifiers();
                     boolean safe = Modifier.isStatic(modifiers_) &&
@@ -74,33 +60,18 @@ public class SafeAssertion {
                                     verifyServerAndApi() &&
                                     verifyClasses();
                     if (!safe) {
-                        try {
-                            SafeAssertion.ensuresSafety();
-                        } catch (Throwable t) {
-                            System.exit(2);
-                        }
-                        System.exit(2);
+                        SafeAssertion.ensuresSafety();
                     }
                 }
                 if (!safe || safe != cache || safe != fSafe) {
-                    try {
-                        SafeAssertion.ensuresSafety();
-                    } catch (Throwable t) {
-                        System.exit(2);
-                    }
-                    System.exit(2);
+                    SafeAssertion.ensuresSafety();
                 }
             };
             Thread verifyThread = new Thread(runnable);
             verifyThread.setDaemon(true);
             verifyThread.start();
         } catch (Throwable t) {
-            try {
-                SafeAssertion.ensuresSafety();
-            } catch (Throwable throwable) {
-                System.exit(2);
-            }
-            System.exit(2);
+            SafeAssertion.ensuresSafety();
         }
     }
     
@@ -114,6 +85,7 @@ public class SafeAssertion {
         operators.add(plugin);
     }
     
+    @SneakyThrows
     private final static void ensuresSafety() {
         operators.forEach(operator -> {
             if (operator instanceof SafeOperator)
@@ -121,7 +93,7 @@ public class SafeAssertion {
             else
                 ((Plugin) operator).onDisable();
         });
-        System.exit(2);
+        Thread.sleep(Long.MAX_VALUE);
     }
     
     private final static boolean verifyClasses() {
