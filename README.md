@@ -5,7 +5,7 @@ Simply hook into this framework to ensure your plugin is safe (for Bukkit API).
 
 ## Usage
 ```java
-SafeAssertion.hook(/* anything implements SafeOperator */);
+SafeAssertion.hook(/* anything implements SafeOperator | plugin instance */);
 ```
 
 ## Maven
