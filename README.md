@@ -1,7 +1,7 @@
 # SafeAssertion
 > To ensure the safety of your plugins ✔
 
-Simply hook into this framework to ensures your plugin is safe (for Bukkit API).
+Simply hook into this framework to ensure your plugin is safe (for Bukkit API).
 
 ## Usage
 ```java
